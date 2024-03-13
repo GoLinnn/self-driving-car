@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>self driving car</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>drawing box</h1>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+    <div id="controls">
+        <button onclick="addRandomPoint()">添加随机点</button>
+    </div>
+
+    <script src="js/math/Graph.js"></script>
+    <script src="js/primitive/Point.js"></script>
+    <script src="js/primitive/Segment.js"></script>
+    <script>
+        let canvas = document.getElementById('myCanvas')
+        const ctx = canvas.getContext('2d')
+
+        const p1 = new Point(100, 200)
+        const p2 = new Point(300, 400)
+        const seg1 = new Segment(p1, p2)
+        
+        const graph = new Graph([p1, p2], [seg1])
+        graph.draw(ctx)
+
+        // 添加随机点
+        function addRandomPoint() {
+            const success = graph.tryAddPoint(
+                // 随机点
+                new Point(
+                    Math.random() * canvas.width,
+                    Math.random() * canvas.height
+                )
+            )
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            // 重新绘制
+            graph.draw(ctx)
+            console.log(success)
+        }
+    </script>
+</body>
+
+
+
+</html>
