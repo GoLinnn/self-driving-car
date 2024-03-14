@@ -12,4 +12,16 @@ class Segment {
         ctx.lineTo(this.point2.x, this.point2.y)
         ctx.stroke()
     }
+    // 判断两条线是否相同
+    // 注意判断两个线段是否相同的条件：
+    // 线段端点1 = 线段端点1 && 线段端点2 = 线段端点2
+    // 线段端点1 = 线段端点2 && 线段端点2 = 线段端点1
+    // 所以用include来判断这种包含关系
+    equals(seg) {
+        return this.includes(seg.point1) && this.includes(seg.point2)
+    }
+    // 判断线段是否包含point点
+    includes(point) {
+        return this.point1.equals(point) || this.point2.equals(point)
+    }
 }

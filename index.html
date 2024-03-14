@@ -14,22 +14,16 @@
     <canvas id="myCanvas" width="500" height="500"></canvas>
     <div id="controls">
         <button onclick="addRandomPoint()">添加随机点</button>
+        <button onclick="addRandomSeg()">添加随机线</button>
+        <button onclick="removeRandomSeg()">删除随机线</button>
+        <button onclick="removeRandomPoint()">删除随机点</button>
+        <button onclick="removeAll()">清空画布</button>
     </div>
 
     <script src="js/math/Graph.js"></script>
     <script src="js/primitive/Point.js"></script>
     <script src="js/primitive/Segment.js"></script>
     <script>
-        let canvas = document.getElementById('myCanvas')
-        const ctx = canvas.getContext('2d')
-
-        const p1 = new Point(100, 200)
-        const p2 = new Point(300, 400)
-        const seg1 = new Segment(p1, p2)
-        
-        const graph = new Graph([p1, p2], [seg1])
-        graph.draw(ctx)
-
         // 添加随机点
         function addRandomPoint() {
             const success = graph.tryAddPoint(
@@ -45,6 +39,64 @@
             graph.draw(ctx)
             console.log(success)
         }
+        // 添加随机线
+        function addRandomSeg() {
+            // 随机生成两个端点
+            const index1 = Math.floor(Math.random() * graph.points.length)
+            const index2 = Math.floor(Math.random() * graph.points.length)
+            graph.tryAddSeg(
+                new Segment(graph.points[index1], graph.points[index2])
+            )
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            // 重新绘制
+            graph.draw(ctx)
+        }
+        // 删除随机线
+        function removeRandomSeg() {
+            if (graph.segments.length === 0) {
+                alert('没有线了！')
+                return
+            }
+            // 随机获取线
+            const index = Math.floor(Math.random() * graph.segments.length)
+            graph.removeSeg(graph.segments[index])
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            // 重新绘制
+            graph.draw(ctx)
+        }
+        // 删除随机点
+        function removeRandomPoint() {
+            if (graph.points.length === 0) {
+                alert('没有点了！')
+                return
+            }
+            // 获取随机点
+            const index = Math.floor(Math.random() * graph.points.length)
+            graph.removePoint(graph.points[index])
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            // 重新绘制
+            graph.draw(ctx)
+        }
+        // 清空画布
+        function removeAll() {
+            graph.dispose()
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            // 重新绘制
+            graph.draw(ctx)
+        }
+        let canvas = document.getElementById('myCanvas')
+        const ctx = canvas.getContext('2d')
+
+        const p1 = new Point(100, 200)
+        const p2 = new Point(300, 400)
+        const seg1 = new Segment(p1, p2)
+
+        const graph = new Graph([p1, p2], [seg1])
+        graph.draw(ctx)
     </script>
 </body>
 
